@@ -4,6 +4,7 @@ import { FiHeart } from "react-icons/fi";
 export default function Card({ item, view = "grid", onConnect, onClick }) {
   const [liked, setLiked] = useState(false);
   const [showBigHeart, setShowBigHeart] = useState(false);
+  const [requestSent, setRequestSent] = useState(false); // ✅ NEW STATE
   const dblTimeout = useRef(null);
 
   const isList = view === "list";
@@ -21,7 +22,7 @@ export default function Card({ item, view = "grid", onConnect, onClick }) {
 
   return (
     <article
-      onClick={() => onClick?.(item)} // ✅ make card clickable
+      onClick={() => onClick?.(item)}
       className={`cursor-pointer bg-white rounded-lg border border-gray-100 overflow-hidden shadow-sm transition hover:shadow-md ${
         isList ? "flex items-center gap-4 p-3" : "flex flex-col h-full"
       }`}
@@ -30,7 +31,7 @@ export default function Card({ item, view = "grid", onConnect, onClick }) {
       <div
         className={`${isList ? "flex-shrink-0" : "relative"}`}
         onDoubleClick={(e) => {
-          e.stopPropagation(); // ✅ prevent it from triggering card click
+          e.stopPropagation();
           handleImageDoubleClick();
         }}
         role="button"
@@ -102,7 +103,7 @@ export default function Card({ item, view = "grid", onConnect, onClick }) {
           {/* Like button on mobile beside title */}
           <button
             onClick={(e) => {
-              e.stopPropagation(); // ✅ prevent triggering card click
+              e.stopPropagation();
               setLiked((s) => !s);
             }}
             className="md:hidden text-lg"
@@ -146,15 +147,22 @@ export default function Card({ item, view = "grid", onConnect, onClick }) {
             </p>
           </div>
 
+          {/* ✅ Updated Connect Button */}
           <button
-  onClick={(e) => {
-    e.stopPropagation(); // ✅ prevent accidental card click
-    onConnect?.(item); // ✅ opens BusinessDetail from Marketplace
-  }}
-  className="w-full px-4 py-2 rounded-md bg-[#D6EBFF] hover:bg-blue-600 text-[#3399FF] hover:text-white text-sm"
->
-  Connect
-</button>
+            onClick={(e) => {
+              e.stopPropagation();
+              onConnect?.(item, () => setRequestSent(true)); // callback support
+              setRequestSent(true); // change button immediately
+            }}
+            disabled={requestSent}
+            className={`w-full px-4 py-2 rounded-md text-sm font-medium transition ${
+              requestSent
+                ? "bg-green-100 text-green-600 border border-green-300 cursor-default"
+                : "bg-[#D6EBFF] hover:bg-blue-600 text-[#3399FF] hover:text-white"
+            }`}
+          >
+            {requestSent ? "Request Sent" : "Connect"}
+          </button>
         </div>
       </div>
     </article>

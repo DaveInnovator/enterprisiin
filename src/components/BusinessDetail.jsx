@@ -2,13 +2,12 @@
 import React, { useState } from "react";
 import BusinessImage from "../assets/opp2.png";
 import BusinessOwner from "../assets/Ellipse 4.png";
-import TopRightIcon  from "../assets/Vector.png";
+import TopRightIcon from "../assets/Vector.png";
+import ConnectionModal from "./ConnectionModal";
 import {
   FiChevronLeft,
   FiDownload,
   FiHeart,
-  FiFileText,
-  FiMapPin,
 } from "react-icons/fi";
 import {
   BsCheckCircleFill,
@@ -17,7 +16,8 @@ import {
   BsFacebook,
 } from "react-icons/bs";
 
-export default function BusinessDetail({ business = {}, onBack, onConnect }) {
+export default function BusinessDetail({ business = {}, onBack }) {
+  const [showConnectionModal, setShowConnectionModal] = useState(false);
   const [liked, setLiked] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
 
@@ -71,8 +71,7 @@ export default function BusinessDetail({ business = {}, onBack, onConnect }) {
   };
 
   const handleConnect = () => {
-    if (typeof onConnect === "function") return onConnect(b);
-    alert("Connect pressed — provide an onConnect prop to handle this.");
+    setShowConnectionModal(true);
   };
 
   return (
@@ -85,7 +84,7 @@ export default function BusinessDetail({ business = {}, onBack, onConnect }) {
             className="flex items-center gap-2 text-gray-700 hover:text-[#3399FF] text-sm md:text-base"
           >
             <FiChevronLeft className="w-5 h-5" />
-            <span className="font-sm  md:font-medium truncate max-w-[60vw] md:max-w-none">
+            <span className="font-sm md:font-medium truncate max-w-[60vw] md:max-w-none">
               {b.title}
             </span>
           </button>
@@ -122,15 +121,12 @@ export default function BusinessDetail({ business = {}, onBack, onConnect }) {
             },
           ].map((stat, i) => (
             <div
-  key={i}
-  className="
-    bg-white border border-gray-200 rounded-[4px] shadow-sm p-5 
-    flex-shrink-0 snap-center 
-    w-[85vw] sm:w-[320px] md:w-[340px] lg:w-[361px] 
-    h-[168px]
-  "
->
-              <img src={TopRightIcon} alt="icon" className="w-4 h-4 float-right"/>
+              key={i}
+              className="bg-white border border-gray-200 rounded-[4px] shadow-sm p-5 
+              flex-shrink-0 snap-center 
+              w-[85vw] sm:w-[320px] md:w-[340px] lg:w-[361px] h-[168px]"
+            >
+              <img src={TopRightIcon} alt="icon" className="w-4 h-4 float-right" />
 
               <p className="text-sm text-gray-500">{stat.label}</p>
               <div className="mt-3 flex items-center gap-2">
@@ -156,11 +152,7 @@ export default function BusinessDetail({ business = {}, onBack, onConnect }) {
           <div className="lg:col-span-8 xl:col-span-9">
             <div
               className="bg-white border border-gray-200 rounded-[4px] shadow-sm"
-              style={{
-                width: "100%",
-                maxWidth: "714px",
-                height: "auto",
-              }}
+              style={{ width: "100%", maxWidth: "714px", height: "auto" }}
             >
               {/* Tabs */}
               <nav className="flex items-center border-b border-gray-200 text-sm overflow-x-auto">
@@ -186,50 +178,47 @@ export default function BusinessDetail({ business = {}, onBack, onConnect }) {
               {/* Content */}
               <div className="p-4 md:p-5 space-y-6">
                 {activeTab === "overview" && (
-                  <><div className="flex flex-col md:flex-row   gap-3">
-                    <div className="relative w-[325px] md:w-[369px] rounded-[4px] overflow-hidden">
-  {/* Image */}
-  <img
-    src={BusinessImage}
-    alt={b.title}
-    className="object-cover w-full h-[163px] md:h-[197px] rounded-[4px]"
-  />
-
-  {/* Heart Button */}
-  <button
-    onClick={() => setLiked(!liked)}
-    className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-105 transition-transform z-10"
-  >
-    <FiHeart
-      className={`w-5 h-5 ${
-        liked ? "text-red-500" : "text-gray-400"
-      }`}
-    />
-  </button>
-</div>
-<div>
-
-
-                      <p className="text-xs text-gray-500">Business Name</p>
-                      <h3 className="font-semibold text-gray-900 mt-1">
-                        {b.businessName}
-                      </h3>
-                      <div className="text-sm text-gray-600 mt-3 space-y-1">
-                        <p>
-                          <span className="font-medium text-gray-700">
-                            Industry:
-                          </span>{" "}
-                          {b.industry}
-                        </p>
-                        <p>
-                          <span className="font-medium text-gray-700">
-                            Legal Entity:
-                          </span>{" "}
-                          {b.legalEntity}
-                        </p>
+                  <>
+                    <div className="flex flex-col md:flex-row gap-3">
+                      <div className="relative w-[325px] md:w-[369px] rounded-[4px] overflow-hidden">
+                        <img
+                          src={BusinessImage}
+                          alt={b.title}
+                          className="object-cover w-full h-[163px] md:h-[197px] rounded-[4px]"
+                        />
+                        <button
+                          onClick={() => setLiked(!liked)}
+                          className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-105 transition-transform z-10"
+                        >
+                          <FiHeart
+                            className={`w-5 h-5 ${
+                              liked ? "text-red-500" : "text-gray-400"
+                            }`}
+                          />
+                        </button>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-500">Business Name</p>
+                        <h3 className="font-semibold text-gray-900 mt-1">
+                          {b.businessName}
+                        </h3>
+                        <div className="text-sm text-gray-600 mt-3 space-y-1">
+                          <p>
+                            <span className="font-medium text-gray-700">
+                              Industry:
+                            </span>{" "}
+                            {b.industry}
+                          </p>
+                          <p>
+                            <span className="font-medium text-gray-700">
+                              Legal Entity:
+                            </span>{" "}
+                            {b.legalEntity}
+                          </p>
                         </div>
                       </div>
-                      </div>
+                    </div>
+
                     <section>
                       <h4 className="font-semibold text-gray-800 mb-2">
                         Business Introduction
@@ -243,7 +232,7 @@ export default function BusinessDetail({ business = {}, onBack, onConnect }) {
                       <h4 className="font-semibold text-gray-800 mb-2">
                         Product & Services Overview
                       </h4>
-                      <p className="text-sm text-gray-700 leading-relaxed  whitespace-pre-line">
+                      <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
                         {b.services}
                       </p>
                     </section>
@@ -266,14 +255,13 @@ export default function BusinessDetail({ business = {}, onBack, onConnect }) {
 
           {/* Sidebar */}
           <aside className="lg:col-span-4 xl:col-span-3">
-            <div className="bg-white w-100 border border-gray-200 rounded-[4px] shadow-sm p-5 lg:sticky lg:top-28">
+            <div className="bg-white border border-gray-200 rounded-[4px] shadow-sm p-5 lg:sticky lg:top-28">
               <div className="relative flex justify-center">
                 <img
                   src={b.owner.image}
                   alt={b.owner.name}
                   className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover"
                 />
-
                 {b.owner.verified && (
                   <div className="absolute -top-1 right-[34%] bg-[#E9F9EE] flex items-center gap-1 px-2 py-0.5 rounded-full shadow-sm">
                     <BsCheckCircleFill className="text-green-600 w-4 h-4" />
@@ -311,6 +299,13 @@ export default function BusinessDetail({ business = {}, onBack, onConnect }) {
             </div>
           </aside>
         </div>
+
+        {/* Connection Modal */}
+        <ConnectionModal
+          isOpen={showConnectionModal}
+          onClose={() => setShowConnectionModal(false)}
+          
+        />
       </main>
     </div>
   );
