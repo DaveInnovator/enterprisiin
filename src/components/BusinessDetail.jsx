@@ -1,7 +1,8 @@
+// src/components/BusinessDetail.jsx
 import React, { useState } from "react";
 import BusinessImage from "../assets/opp2.png";
 import BusinessOwner from "../assets/Ellipse 4.png";
-import TopRightIcon from "../assets/Vector.png";
+import TopRightIcon  from "../assets/Vector.png";
 import {
   FiChevronLeft,
   FiDownload,
@@ -77,21 +78,21 @@ export default function BusinessDetail({ business = {}, onBack, onConnect }) {
   return (
     <div className="w-full min-h-screen bg-[#F9FAFB] flex flex-col overflow-x-hidden md:pt-6">
       {/* Header */}
-      <header className="md:pl-[280px] px-4 md:px-8">
+      <header className="md:pl-[280px] pl-[2px] px-4 md:px-8">
         <div className="flex items-center justify-between gap-3 mb-5">
           <button
             onClick={onBack}
             className="flex items-center gap-2 text-gray-700 hover:text-[#3399FF] text-sm md:text-base"
           >
             <FiChevronLeft className="w-5 h-5" />
-            <span className="font-medium truncate max-w-[60vw] md:max-w-none">
+            <span className="font-sm  md:font-medium truncate max-w-[60vw] md:max-w-none">
               {b.title}
             </span>
           </button>
 
           <button
             onClick={handleDownload}
-            className="flex items-center gap-2 bg-[#EAF4FF] text-[#3399FF] px-4 py-2 rounded-md text-sm hover:bg-[#D6EBFF]"
+            className="flex items-center mr-3 gap-1 bg-[#EAF4FF] text-[#3399FF] px-4 py-2 rounded-md text-sm hover:bg-[#D6EBFF]"
           >
             <FiDownload className="w-4 h-4" />
             Download
@@ -101,7 +102,7 @@ export default function BusinessDetail({ business = {}, onBack, onConnect }) {
 
       {/* Stats */}
       <section className="md:pl-[280px] px-4 md:px-8 mb-6">
-        <div className="flex gap-4 overflow-x-auto md:overflow-x-visible pb-3 md:grid md:grid-cols-3 md:gap-4 snap-x snap-mandatory scrollbar-hide">
+        <div className="grid gap-4 overflow-x-auto pb-3 md:grid md:grid-cols-3 md:gap-4 snap-x snap-mandatory">
           {[
             {
               label: "Investment Required",
@@ -121,17 +122,21 @@ export default function BusinessDetail({ business = {}, onBack, onConnect }) {
             },
           ].map((stat, i) => (
             <div
-              key={i}
-              className="bg-white border border-gray-200 rounded-[4px] shadow-sm p-5 flex-shrink-0 snap-center"
-              style={{
-                width: "314px",
-                height: "168px",
-              }}
-            >
-              <img src={TopRightIcon} alt="icon" className="w-4 h-4 float-right" />
+  key={i}
+  className="
+    bg-white border border-gray-200 rounded-[4px] shadow-sm p-5 
+    flex-shrink-0 snap-center 
+    w-[85vw] sm:w-[320px] md:w-[340px] lg:w-[361px] 
+    h-[168px]
+  "
+>
+              <img src={TopRightIcon} alt="icon" className="w-4 h-4 float-right"/>
+
               <p className="text-sm text-gray-500">{stat.label}</p>
               <div className="mt-3 flex items-center gap-2">
-                <p className="text-xl font-semibold text-gray-900">{stat.value}</p>
+                <p className="text-xl font-semibold text-gray-900">
+                  {stat.value}
+                </p>
                 {stat.badge && (
                   <span className="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">
                     {stat.badge}
@@ -158,7 +163,7 @@ export default function BusinessDetail({ business = {}, onBack, onConnect }) {
               }}
             >
               {/* Tabs */}
-              <nav className="flex items-center border-b border-gray-200 text-sm overflow-x-auto scrollbar-hide">
+              <nav className="flex items-center border-b border-gray-200 text-sm overflow-x-auto">
                 {[
                   { id: "overview", label: "Business Overview" },
                   { id: "attachments", label: "Attachments" },
@@ -181,47 +186,50 @@ export default function BusinessDetail({ business = {}, onBack, onConnect }) {
               {/* Content */}
               <div className="p-4 md:p-5 space-y-6">
                 {activeTab === "overview" && (
-                  <>
-                    <div className="flex flex-col md:flex-row gap-3">
-                      <div className="relative w-[325px] md:w-[369px] rounded-[4px] overflow-hidden">
-                        <img
-                          src={BusinessImage}
-                          alt={b.title}
-                          className="object-cover w-full h-[163px] md:h-[197px] rounded-[4px]"
-                        />
-                        <button
-                          onClick={() => setLiked(!liked)}
-                          className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-105 transition-transform z-10"
-                        >
-                          <FiHeart
-                            className={`w-5 h-5 ${
-                              liked ? "text-red-500" : "text-gray-400"
-                            }`}
-                          />
-                        </button>
-                      </div>
-                      <div>
-                        <p className="text-xs text-gray-500">Business Name</p>
-                        <h3 className="font-semibold text-gray-900 mt-1">
-                          {b.businessName}
-                        </h3>
-                        <div className="text-sm text-gray-600 mt-3 space-y-1">
-                          <p>
-                            <span className="font-medium text-gray-700">
-                              Industry:
-                            </span>{" "}
-                            {b.industry}
-                          </p>
-                          <p>
-                            <span className="font-medium text-gray-700">
-                              Legal Entity:
-                            </span>{" "}
-                            {b.legalEntity}
-                          </p>
+                  <><div className="flex flex-col md:flex-row   gap-3">
+                    <div className="relative w-[325px] md:w-[369px] rounded-[4px] overflow-hidden">
+  {/* Image */}
+  <img
+    src={BusinessImage}
+    alt={b.title}
+    className="object-cover w-full h-[163px] md:h-[197px] rounded-[4px]"
+  />
+
+  {/* Heart Button */}
+  <button
+    onClick={() => setLiked(!liked)}
+    className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-105 transition-transform z-10"
+  >
+    <FiHeart
+      className={`w-5 h-5 ${
+        liked ? "text-red-500" : "text-gray-400"
+      }`}
+    />
+  </button>
+</div>
+<div>
+
+
+                      <p className="text-xs text-gray-500">Business Name</p>
+                      <h3 className="font-semibold text-gray-900 mt-1">
+                        {b.businessName}
+                      </h3>
+                      <div className="text-sm text-gray-600 mt-3 space-y-1">
+                        <p>
+                          <span className="font-medium text-gray-700">
+                            Industry:
+                          </span>{" "}
+                          {b.industry}
+                        </p>
+                        <p>
+                          <span className="font-medium text-gray-700">
+                            Legal Entity:
+                          </span>{" "}
+                          {b.legalEntity}
+                        </p>
                         </div>
                       </div>
-                    </div>
-
+                      </div>
                     <section>
                       <h4 className="font-semibold text-gray-800 mb-2">
                         Business Introduction
@@ -235,7 +243,7 @@ export default function BusinessDetail({ business = {}, onBack, onConnect }) {
                       <h4 className="font-semibold text-gray-800 mb-2">
                         Product & Services Overview
                       </h4>
-                      <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
+                      <p className="text-sm text-gray-700 leading-relaxed  whitespace-pre-line">
                         {b.services}
                       </p>
                     </section>
@@ -258,7 +266,7 @@ export default function BusinessDetail({ business = {}, onBack, onConnect }) {
 
           {/* Sidebar */}
           <aside className="lg:col-span-4 xl:col-span-3">
-            <div className="bg-white w-full border border-gray-200 rounded-[4px] shadow-sm p-5 lg:sticky lg:top-28">
+            <div className="bg-white w-100 border border-gray-200 rounded-[4px] shadow-sm p-5 lg:sticky lg:top-28">
               <div className="relative flex justify-center">
                 <img
                   src={b.owner.image}
