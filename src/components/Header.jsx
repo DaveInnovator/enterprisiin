@@ -20,9 +20,9 @@ export default function Header({ userName = "John Doe", date = "07 May, 2023", o
               <p className="text-sm text-gray-500">{date}</p>
             </div>
 
-            {/* RIGHT: Search, Bell, Avatar */}
+           
             <div className="flex items-center gap-4 pr-8"> 
-              {/* Search Bar */}
+             
               <div className="flex items-center bg-gray-100 rounded-lg px-3 py-2">
                 <FiSearch className="text-gray-500 mr-2" />
                 <input
@@ -32,13 +32,13 @@ export default function Header({ userName = "John Doe", date = "07 May, 2023", o
                 />
               </div>
 
-              {/* Notification */}
+              
               <button
                 aria-label="Notifications"
                 className="relative p-2 rounded-full hover:bg-gray-100 transition"
               >
                 <FiBell className="text-gray-600 text-lg" />
-                <span className="absolute top-2 right-2 block w-2 h-2 bg-blue-500 rounded-full"></span>
+                <span className="absolute top-2 right-2 block w-2 h-2 bg-red-500 rounded-full"></span>
               </button>
 
               {/* Avatar + Dropdown */}

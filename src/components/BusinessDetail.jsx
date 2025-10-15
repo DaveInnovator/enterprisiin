@@ -1,4 +1,4 @@
-// src/components/BusinessDetail.jsx
+
 import React, { useState } from "react";
 import BusinessImage from "../assets/opp2.png";
 import BusinessOwner from "../assets/Ellipse 4.png";
@@ -16,10 +16,17 @@ import {
   BsFacebook,
 } from "react-icons/bs";
 
-export default function BusinessDetail({ business = {}, onBack }) {
+export default function BusinessDetail({ business = {}, onBack, onRequestSent }) {
   const [showConnectionModal, setShowConnectionModal] = useState(false);
+  const [requestSent, setRequestSent] = useState(false);
   const [liked, setLiked] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
+   
+   const handleRequestSent = () => {
+    setRequestSent(true);
+    setShowConnectionModal(false);
+    onRequestSent?.(); 
+  };
 
   const b = {
     title: business.title ?? "Aquatics and Sport Coaching Opportunity",
@@ -254,8 +261,8 @@ export default function BusinessDetail({ business = {}, onBack }) {
           </div>
 
           {/* Sidebar */}
-          <aside className="lg:col-span-4 xl:col-span-3">
-            <div className="bg-white border border-gray-200 rounded-[4px] shadow-sm p-5 lg:sticky lg:top-28">
+          <aside className="lg:col-span-4 h-[450px] w-[3000px] md:-ml-30 -ml-5 flex p-4 xl:col-span-3">
+            <div className="bg-white border border-gray-200 rounded-[4px] shadow-sm p-[1%] lg:sticky lg:top-28">
               <div className="relative flex justify-center">
                 <img
                   src={b.owner.image}
@@ -263,7 +270,7 @@ export default function BusinessDetail({ business = {}, onBack }) {
                   className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover"
                 />
                 {b.owner.verified && (
-                  <div className="absolute -top-1 right-[34%] bg-[#E9F9EE] flex items-center gap-1 px-2 py-0.5 rounded-full shadow-sm">
+                  <div className="absolute -top-1 right-[16%] bg-[#E9F9EE] flex items-center gap-1 px-2 py-0.5 rounded-full shadow-sm">
                     <BsCheckCircleFill className="text-green-600 w-4 h-4" />
                     <span className="text-green-600 text-xs font-medium">
                       Verified
@@ -290,22 +297,27 @@ export default function BusinessDetail({ business = {}, onBack }) {
                 ))}
               </div>
 
-              <button
-                onClick={handleConnect}
-                className="mt-6 w-full bg-[#3399FF] hover:bg-blue-700 text-white py-2.5 rounded-md text-sm font-medium transition"
-              >
-                Connect
+                 <button
+          onClick={() => setShowConnectionModal(true)}
+          disabled={requestSent}
+          className={`px-30 py-2 ml-4 mt-4 rounded-md text-sm font-medium ${
+            requestSent
+              ? "bg-green-100 text-green-600 border border-green-300 cursor-default"
+              : "bg-[#3399FF] text-white hover:bg-blue-700"
+          }`}
+        >
+                {requestSent ? "Request Sent" : "Connect"}
               </button>
             </div>
           </aside>
         </div>
 
-        {/* Connection Modal */}
         <ConnectionModal
-          isOpen={showConnectionModal}
-          onClose={() => setShowConnectionModal(false)}
-          
-        />
+        isOpen={showConnectionModal}
+        onClose={() => setShowConnectionModal(false)}
+        onRequestSent={handleRequestSent}
+      />
+
       </main>
     </div>
   );
